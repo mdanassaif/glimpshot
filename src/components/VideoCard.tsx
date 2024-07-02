@@ -78,20 +78,19 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
       <video
         ref={videoRef}
         className="w-full h-full object-cover"
-        src={isActive ? videoUrl : ''}
+        src={videoUrl}
         loop
         playsInline
         controls={false}
       />
       {isPaused && (
         <motion.div
-        className="absolute inset-0 flex items-center justify-center"
-
+          className="absolute inset-0 flex items-center justify-center"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
-          <button className="  rounded-full shadow-xl">
+          <button className="rounded-full shadow-xl">
             <FaPlayCircle className="text-5xl text-[#dce775]" />
           </button>
         </motion.div>

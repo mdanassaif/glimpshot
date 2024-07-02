@@ -1,24 +1,27 @@
 'use client'
-
-import React, { useRef, useEffect, useState } from 'react';
+// Reels component integrating WelcomeMessage
+import React, { useRef, useEffect, useState, useCallback } from 'react';
+import WelcomeMessage from '../components/WelcomeMessage';
 import VideoCard from '../components/VideoCard';
-import { videos } from '../videoData';
+import { videos as initialVideos } from '../videoData';
 import { debounce } from 'lodash';
 
 const getRandomIndex = (max: number) => Math.floor(Math.random() * max);
 
 const Reels: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(getRandomIndex(videos.length));
+  const [videos, setVideos] = useState(initialVideos); // State to hold the list of videos
+  const [activeIndex, setActiveIndex] = useState(getRandomIndex(initialVideos.length));
   const [activeVideo, setActiveVideo] = useState<HTMLVideoElement | null>(null);
   const [canScroll, setCanScroll] = useState(true);
+  const [showWelcomePage, setShowWelcomePage] = useState(true); // State to control showing welcome page
 
-  const handlePlay = (videoElement: HTMLVideoElement) => {
+  const handlePlay = useCallback((videoElement: HTMLVideoElement) => {
     if (activeVideo && activeVideo !== videoElement) {
       activeVideo.pause();
     }
     setActiveVideo(videoElement);
-  };
+  }, [activeVideo]);
 
   const handleScroll = debounce(() => {
     const container = containerRef.current;
@@ -30,10 +33,25 @@ const Reels: React.FC = () => {
       if (newActiveIndex !== activeIndex) {
         setActiveIndex(newActiveIndex);
         setCanScroll(false);
-        setTimeout(() => setCanScroll(true), );
+        setTimeout(() => setCanScroll(true), 1000);
+      }
+
+      // Hide welcome page when scrolled
+      if (scrollPosition > 0 && showWelcomePage) {
+        setShowWelcomePage(false);
+      }
+
+      // Load more videos when reaching the end
+      if (container.scrollHeight - container.clientHeight <= scrollPosition) {
+        handleLoadMoreVideos();
       }
     }
   }, 100);
+
+  const handleLoadMoreVideos = () => {
+    // Simulate loading more videos
+    setVideos(prevVideos => [...prevVideos, ...initialVideos]);
+  };
 
   useEffect(() => {
     const container = containerRef.current;
@@ -75,17 +93,29 @@ const Reels: React.FC = () => {
         container.removeEventListener('touchmove', handleTouchMove);
       };
     }
-  }, [activeIndex, canScroll]);
+  }, [canScroll, showWelcomePage]);
 
   useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && !showWelcomePage) {
       containerRef.current.scrollTo({ top: activeIndex * window.innerHeight, behavior: 'smooth' });
+
+      const videosInContainer = containerRef.current.querySelectorAll('video');
+      if (videosInContainer.length > 0) {
+        const initialVideo = videosInContainer[activeIndex] as HTMLVideoElement;
+        handlePlay(initialVideo);
+      }
     }
-  }, [activeIndex]);
+  }, [activeIndex, showWelcomePage, handlePlay]);
+
+  const handleWelcomeButtonClick = () => {
+    setShowWelcomePage(false);
+  };
 
   return (
     <div ref={containerRef} className="snap-y snap-mandatory overflow-scroll h-screen">
-      {videos.map((video, index) => (
+      {showWelcomePage && <WelcomeMessage onStart={handleWelcomeButtonClick} />}
+
+      {!showWelcomePage && videos.map((video, index) => (
         <div key={index} className="snap-center h-screen flex justify-center items-center">
           <div className="w-full h-full lg:w-2/3 lg:max-w-lg lg:max-h-lg relative overflow-hidden">
             <VideoCard {...video} isActive={index === activeIndex} onPlay={handlePlay} />
