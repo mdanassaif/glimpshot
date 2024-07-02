@@ -1,18 +1,18 @@
 'use client'
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { FaPause } from 'react-icons/fa';
-
-
+import Image from 'next/image';
 
 interface VideoCardProps {
   videoUrl: string;
   title: string;
   username: string;
+  avatarUrl: string;
   isActive: boolean;
   onPlay: (videoElement: HTMLVideoElement) => void;
 }
 
-const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, isActive, onPlay }) => {
+const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, avatarUrl, isActive, onPlay }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPaused, setIsPaused] = useState(true);
 
@@ -22,14 +22,13 @@ const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, isActi
 
       if (playPromise !== undefined) {
         playPromise.then(() => {
-          setIsPaused(false); // Update state when video starts playing
+          setIsPaused(false);
           if (videoRef.current) {
-            onPlay(videoRef.current); // Notify parent component that video is playing
+            onPlay(videoRef.current);
           }
         })
         .catch(error => {
-         
-          setIsPaused(true); // Ensure state reflects paused state on error
+          setIsPaused(true);
         });
       }
     }
@@ -37,20 +36,20 @@ const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, isActi
 
   useEffect(() => {
     if (isActive && videoRef.current) {
-      videoRef.current.currentTime = 0;  // Reset to the beginning
-      playVideo(); // Attempt to play on mount
+      videoRef.current.currentTime = 0;
+      playVideo();
     } else if (videoRef.current) {
-      videoRef.current.pause(); // Pause video if isActive is false
+      videoRef.current.pause();
     }
   }, [isActive, playVideo]);
 
   const handlePlayPause = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
-        playVideo(); // Play video if paused
+        playVideo();
       } else {
-        videoRef.current.pause(); // Pause video if playing
-        setIsPaused(true); // Update state to indicate video is paused
+        videoRef.current.pause();
+        setIsPaused(true);
       }
     }
   };
@@ -68,13 +67,16 @@ const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, isActi
       {isPaused && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <button className="bg-white rounded-full p-2">
-          <FaPause/>
+            <FaPause />
           </button>
         </div>
       )}
       <div className="absolute bottom-0 left-0 p-4 text-white w-full bg-gradient-to-t from-black to-transparent">
-        <h3 className="text-xl font-bold">{title}</h3>
-        <p className="text-md">@{username}</p>
+        <div className="flex items-center mb-2">
+          <Image src={avatarUrl} width={24} height={24} alt="Avatar" className="rounded-full mr-2" />
+          <h3 className="text-lg font-bold">{title}</h3>
+        </div>
+        <p className="text-sm">@{username}</p>
       </div>
     </div>
   );

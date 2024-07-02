@@ -1,22 +1,24 @@
 'use client'
 
+
+// Reels.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import VideoCard from '../components/VideoCard';
 
 const videos = [
-  { videoUrl: 'video1.mp4', title: 'When dragons are never caged', username: 'HouseOFDragon' },
-  { videoUrl: 'video2.mp4', title: 'Aage kya Karna hai ?', username: ' KotaFactory' },
-  { videoUrl: 'video3.mp4', title: 'Cheezo ke peeche kyo bhagte ho?', username: 'KhushRahaKar' },
-  { videoUrl: 'video4.mp4', title: 'I found My bestie childhood video', username: 'childhoodmemory' },
-  { videoUrl: 'video5.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache' },
-  { videoUrl: 'video6.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist' },
+  { videoUrl: 'video1.mp4', title: 'When dragons are never caged', username: 'HouseOFDragon', avatarUrl: '/avatar1.png' },
+  { videoUrl: 'video2.mp4', title: 'Aage kya Karna hai ?', username: 'KotaFactory', avatarUrl: '/avatar2.png' },
+  { videoUrl: 'video3.mp4', title: 'Cheezo ke peeche kyo bhagte ho?', username: 'KhushRahaKar', avatarUrl: '/avatar1.png' },
+  { videoUrl: 'video4.mp4', title: 'I found My bestie childhood video', username: 'childhoodmemory', avatarUrl: '/avatar2.png' },
+  { videoUrl: 'video5.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+  { videoUrl: 'video6.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist', avatarUrl: '/avatar2.png' },
 ];
 
 const Reels: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeVideo, setActiveVideo] = useState<HTMLVideoElement | null>(null);
-  const [canScroll, setCanScroll] = useState(true); // State to control scrolling
+  const [canScroll, setCanScroll] = useState(true);
 
   const handlePlay = (videoElement: HTMLVideoElement) => {
     if (activeVideo && activeVideo !== videoElement) {
@@ -34,8 +36,8 @@ const Reels: React.FC = () => {
 
       if (newActiveIndex !== activeIndex) {
         setActiveIndex(newActiveIndex);
-        setCanScroll(false); // Disable scrolling until video is fully scrolled out
-        setTimeout(() => setCanScroll(true)); // Re-enable scrolling after 1 second
+        setCanScroll(false);
+        setTimeout(() => setCanScroll(true));
       }
     }
   };
@@ -59,15 +61,13 @@ const Reels: React.FC = () => {
         const touchDiff = touchStartY - touchEndY;
 
         if (touchDiff > 50 && canScroll) {
-          // Scroll up
           container.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
           setCanScroll(false);
-          setTimeout(() => setCanScroll(true), 1000); // Re-enable scrolling after 1 second
+          setTimeout(() => setCanScroll(true), 1000);
         } else if (touchDiff < -50 && canScroll) {
-          // Scroll down
           container.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
           setCanScroll(false);
-          setTimeout(() => setCanScroll(true), 1000); // Re-enable scrolling after 1 second
+          setTimeout(() => setCanScroll(true), 1000);
         }
 
         touchStartY = 0;
@@ -88,7 +88,7 @@ const Reels: React.FC = () => {
     <div ref={containerRef} className="snap-y snap-mandatory overflow-scroll h-screen">
       {videos.map((video, index) => (
         <div key={index} className="snap-center h-screen flex justify-center items-center">
-          <div className="w-full h-full lg:w-2/3 lg:h-2/3 lg:max-w-lg lg:max-h-lg flex justify-center items-center">
+          <div className="w-full h-full lg:w-2/3 lg:h-2/3 lg:max-w-lg lg:max-h-lg relative overflow-hidden rounded-xl shadow-lg">
             <VideoCard {...video} isActive={index === activeIndex} onPlay={handlePlay} />
           </div>
         </div>
