@@ -71,10 +71,10 @@ const config: Config = {
           '100%': { transform: 'rotate(360deg)' },
         },
         ping: {
-          '75%, 100%': { transform: 'scale(2)', opacity: 0 },
+          '75%, 100%': { transform: 'scale(2)', opacity: '0' },
         },
         pulse: {
-          '50%': { opacity: 0.5 },
+          '50%': { opacity: "0.5" },
         },
         bounce: {
           '0%, 100%': { transform: 'translateY(-25%)', animationTimingFunction: 'cubic-bezier(0.8,0,1,1)' },
@@ -86,32 +86,32 @@ const config: Config = {
           '20%, 40%, 60%, 80%': { transform: 'translateX(10px)' },
         },
         fade: {
-          '0%': { opacity: 0 },
-          '100%': { opacity: 1 },
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
         'fade-down': {
-          '0%': { opacity: 0, transform: 'translateY(-20px)' },
-          '100%': { opacity: 1, transform: 'translateY(0)' },
+          '0%': { opacity: '0', transform: 'translateY(-20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'fade-up': {
-          '0%': { opacity: 0, transform: 'translateY(20px)' },
-          '100%': { opacity: 1, transform: 'translateY(0)' },
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'fade-left': {
-          '0%': { opacity: 0, transform: 'translateX(-20px)' },
-          '100%': { opacity: 1, transform: 'translateX(0)' },
+          '0%': { opacity: '0', transform: 'translateX(-20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
         },
         'fade-right': {
-          '0%': { opacity: 0, transform: 'translateX(20px)' },
-          '100%': { opacity: 1, transform: 'translateX(0)' },
+          '0%': { opacity: '0', transform: 'translateX(20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
         },
         'flip-up': {
-          '0%': { transform: 'perspective(400px) rotateX(90deg)', opacity: 0 },
-          '100%': { transform: 'perspective(400px) rotateX(0)', opacity: 1 },
+          '0%': { transform: 'perspective(400px) rotateX(90deg)', opacity: '0' },
+          '100%': { transform: 'perspective(400px) rotateX(0)', opacity: '1' },
         },
         'flip-down': {
-          '0%': { transform: 'perspective(400px) rotateX(-90deg)', opacity: 0 },
-          '100%': { transform: 'perspective(400px) rotateX(0)', opacity: 1 },
+          '0%': { transform: 'perspective(400px) rotateX(-90deg)', opacity: '0' },
+          '100%': { transform: 'perspective(400px) rotateX(0)', opacity: '1' },
         },
       },
     },
