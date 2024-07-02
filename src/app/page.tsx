@@ -1,10 +1,11 @@
 'use client'
-// Reels component integrating WelcomeMessage
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import WelcomeMessage from '../components/WelcomeMessage';
 import VideoCard from '../components/VideoCard';
 import { videos as initialVideos } from '../videoData';
 import { debounce } from 'lodash';
+import { useRouter } from 'next/navigation';
+
 
 const getRandomIndex = (max: number) => Math.floor(Math.random() * max);
 
@@ -15,6 +16,7 @@ const Reels: React.FC = () => {
   const [activeVideo, setActiveVideo] = useState<HTMLVideoElement | null>(null);
   const [canScroll, setCanScroll] = useState(true);
   const [showWelcomePage, setShowWelcomePage] = useState(true); // State to control showing welcome page
+  const router = useRouter();
 
   const handlePlay = useCallback((videoElement: HTMLVideoElement) => {
     if (activeVideo && activeVideo !== videoElement) {
@@ -118,7 +120,12 @@ const Reels: React.FC = () => {
       {!showWelcomePage && videos.map((video, index) => (
         <div key={index} className="snap-center h-screen flex justify-center items-center">
           <div className="w-full h-full lg:w-2/3 lg:max-w-lg lg:max-h-lg relative overflow-hidden">
-            <VideoCard {...video} isActive={index === activeIndex} onPlay={handlePlay} />
+            <VideoCard
+              {...video}
+              isActive={index === activeIndex}
+              onPlay={handlePlay}
+              videoId={video.id} // Assuming video has an 'id' property
+            />
           </div>
         </div>
       ))}

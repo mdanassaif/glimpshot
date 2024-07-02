@@ -2,9 +2,10 @@
 'use client'
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { FaPlayCircle } from 'react-icons/fa';
+import { FaPlayCircle, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 interface VideoCardProps {
   videoUrl: string;
@@ -13,12 +14,18 @@ interface VideoCardProps {
   avatarUrl: string;
   isActive: boolean;
   onPlay: (videoElement: HTMLVideoElement) => void;
+  videoId: string; // Add videoId prop
 }
 
-const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, username, avatarUrl, isActive, onPlay }) => {
+const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, username, avatarUrl, isActive, onPlay, videoId }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPaused, setIsPaused] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [likes, setLikes] = useState(0); // State to hold likes count
+  const [dislikes, setDislikes] = useState(0); // State to hold dislikes count
+  const [liked, setLiked] = useState(false); // State to track if current user liked the video
+  const [disliked, setDisliked] = useState(false); // State to track if current user disliked the video
+  const router = useRouter();
 
   const playVideo = useCallback(() => {
     if (videoRef.current) {
@@ -38,6 +45,27 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
       }
     }
   }, [onPlay]);
+
+  useEffect(() => {
+    // Fetch initial likes and dislikes from MongoDB
+    const fetchLikesAndDislikes = async () => {
+      try {
+        const response = await fetch(`/api/likes?videoId=${videoId}`);
+        if (response.ok) {
+          const { likes: initialLikes, dislikes: initialDislikes } = await response.json();
+          setLikes(initialLikes);
+          setDislikes(initialDislikes);
+        } else {
+          throw new Error('Failed to fetch likes and dislikes');
+        }
+      } catch (error) {
+        console.error('Error fetching likes and dislikes:', error);
+        // Handle error scenario
+      }
+    };
+
+    fetchLikesAndDislikes();
+  }, [videoId]);
 
   useEffect(() => {
     if (isActive && videoRef.current) {
@@ -73,6 +101,98 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
     }
   };
 
+  const handleLike = async () => {
+    try {
+      if (!liked && !disliked) {
+        setLikes(prevLikes => prevLikes + 1);
+        setLiked(true);
+
+        // Example: Store like in MongoDB
+        const response = await fetch('/api/likes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ videoId, action: 'like' }), // Use videoId prop
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to store like');
+        }
+      } else if (liked) {
+        setLikes(prevLikes => prevLikes - 1);
+        setLiked(false);
+      } else if (disliked) {
+        setLikes(prevLikes => prevLikes + 1);
+        setDislikes(prevDislikes => prevDislikes - 1);
+        setLiked(true);
+        setDisliked(false);
+
+        // Example: Update like in MongoDB
+        const response = await fetch('/api/likes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ videoId, action: 'like' }), // Use videoId prop
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update like');
+        }
+      }
+    } catch (error) {
+      console.error('Error handling like:', error);
+      // Handle error scenario
+    }
+  };
+
+  const handleDislike = async () => {
+    try {
+      if (!liked && !disliked) {
+        setDislikes(prevDislikes => prevDislikes + 1);
+        setDisliked(true);
+
+        // Example: Store dislike in MongoDB
+        const response = await fetch('/api/likes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ videoId, action: 'dislike' }), // Use videoId prop
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to store dislike');
+        }
+      } else if (disliked) {
+        setDislikes(prevDislikes => prevDislikes - 1);
+        setDisliked(false);
+      } else if (liked) {
+        setDislikes(prevDislikes => prevDislikes + 1);
+        setLikes(prevLikes => prevLikes - 1);
+        setDisliked(true);
+        setLiked(false);
+
+        // Example: Update dislike in MongoDB
+        const response = await fetch('/api/likes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ videoId, action: 'dislike' }), // Use videoId prop
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update dislike');
+        }
+      }
+    } catch (error) {
+      console.error('Error handling dislike:', error);
+      // Handle error scenario
+    }
+  };
+
   return (
     <div className="relative w-full h-full flex justify-center items-center bg-black cursor-pointer" onClick={handlePlayPause}>
       <video
@@ -95,7 +215,18 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
           </button>
         </motion.div>
       )}
-      <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4">
+    <div className="absolute top-1/2 right-0 mr-3 transform -translate-y-1/2 flex flex-col items-center space-y-2">
+  <button onClick={handleLike} className={`rounded-full p-2 ${liked ? 'bg-[#dce775]' : 'bg-transparent'}`}>
+    <FaThumbsUp className="text-2xl text-white" />
+  </button>
+  <span className="text-white">{likes}</span>
+  <button onClick={handleDislike} className={`rounded-full p-2 ${disliked ? 'bg-red-500' : 'bg-transparent'}`}>
+    <FaThumbsDown className="text-2xl text-white" />
+  </button>
+  <span className="text-white">{dislikes}</span>
+</div>
+
+      <div className="absolute bottom-10 left-0 w-full  p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Image src={avatarUrl} width={40} height={40} alt="Avatar" className="rounded-full mr-2 border-4 border-[#dce775]" />
