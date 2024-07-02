@@ -1,5 +1,6 @@
+/* eslint-disable react/display-name */
 'use client'
-// VideoCard.tsx
+
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { FaPlayCircle } from 'react-icons/fa';
 import Image from 'next/image';
@@ -14,7 +15,7 @@ interface VideoCardProps {
   onPlay: (videoElement: HTMLVideoElement) => void;
 }
 
-const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, avatarUrl, isActive, onPlay }) => {
+const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, username, avatarUrl, isActive, onPlay }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPaused, setIsPaused] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -77,7 +78,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, avatar
       <video
         ref={videoRef}
         className="w-full h-full object-cover"
-        src={videoUrl}
+        src={isActive ? videoUrl : ''}
         loop
         playsInline
         controls={false}
@@ -117,7 +118,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, avatar
       </div>
     </div>
   );
-};
+});
 
 export default VideoCard;
-

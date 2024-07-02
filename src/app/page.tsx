@@ -1,9 +1,9 @@
 'use client'
 
-// Reels.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import VideoCard from '../components/VideoCard';
 import { videos } from '../videoData';
+import { debounce } from 'lodash';
 
 const getRandomIndex = (max: number) => Math.floor(Math.random() * max);
 
@@ -20,7 +20,7 @@ const Reels: React.FC = () => {
     setActiveVideo(videoElement);
   };
 
-  const handleScroll = () => {
+  const handleScroll = debounce(() => {
     const container = containerRef.current;
     if (container && canScroll) {
       const scrollPosition = container.scrollTop;
@@ -30,10 +30,10 @@ const Reels: React.FC = () => {
       if (newActiveIndex !== activeIndex) {
         setActiveIndex(newActiveIndex);
         setCanScroll(false);
-        setTimeout(() => setCanScroll(true)); // Adjusted timeout to 1000ms
+        setTimeout(() => setCanScroll(true), );
       }
     }
-  };
+  }, 100);
 
   useEffect(() => {
     const container = containerRef.current;
