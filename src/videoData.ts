@@ -1,0 +1,27 @@
+// videoData.ts
+export const videos = [
+    { videoUrl: 'video1.mp4', title: 'When dragons are never caged', username: 'HouseOFDragon', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video2.mp4', title: 'Aage kya Karna hai ?', username: 'KotaFactory', avatarUrl: '/avatar2.png' },
+    { videoUrl: 'video3.mp4', title: 'Cheezo ke peeche kyo bhagte ho?', username: 'KhushRahaKar', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video4.mp4', title: 'I found My bestie childhood video', username: 'childhoodmemory', avatarUrl: '/avatar2.png' },
+    { videoUrl: 'video5.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video6.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist', avatarUrl: '/avatar2.png' },
+    { videoUrl: 'video7.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video8.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video9.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist', avatarUrl: '/avatar2.png' },
+    { videoUrl: 'video10.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video11.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist', avatarUrl: '/avatar2.png' },
+    { videoUrl: 'video12.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video13.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist', avatarUrl: '/avatar2.png' },
+    { videoUrl: 'video14.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video15.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist', avatarUrl: '/avatar2.png' },
+    { videoUrl: 'video16.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video17.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist', avatarUrl: '/avatar2.png' },
+    { videoUrl: 'video18.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video19.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist', avatarUrl: '/avatar2.png' },
+    { videoUrl: 'video20.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video21.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist', avatarUrl: '/avatar2.png' },
+    { videoUrl: 'video22.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache', avatarUrl: '/avatar1.png' },
+    { videoUrl: 'video23.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist', avatarUrl: '/avatar2.png' },
+  ];
+  

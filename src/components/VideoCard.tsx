@@ -1,7 +1,9 @@
 'use client'
+// VideoCard.tsx
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { FaPause } from 'react-icons/fa';
+import { FaPlayCircle } from 'react-icons/fa';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 interface VideoCardProps {
   videoUrl: string;
@@ -15,21 +17,23 @@ interface VideoCardProps {
 const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, avatarUrl, isActive, onPlay }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPaused, setIsPaused] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   const playVideo = useCallback(() => {
     if (videoRef.current) {
       const playPromise = videoRef.current.play();
 
       if (playPromise !== undefined) {
-        playPromise.then(() => {
-          setIsPaused(false);
-          if (videoRef.current) {
-            onPlay(videoRef.current);
-          }
-        })
-        .catch(error => {
-          setIsPaused(true);
-        });
+        playPromise
+          .then(() => {
+            setIsPaused(false);
+            if (videoRef.current) {
+              onPlay(videoRef.current);
+            }
+          })
+          .catch(() => {
+            setIsPaused(true);
+          });
       }
     }
   }, [onPlay]);
@@ -42,6 +46,20 @@ const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, avatar
       videoRef.current.pause();
     }
   }, [isActive, playVideo]);
+
+  useEffect(() => {
+    const updateProgress = () => {
+      if (videoRef.current) {
+        const currentTime = videoRef.current.currentTime;
+        const duration = videoRef.current.duration;
+        setProgress((currentTime / duration) * 100);
+      }
+    };
+
+    const interval = setInterval(updateProgress, 200);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handlePlayPause = () => {
     if (videoRef.current) {
@@ -65,21 +83,41 @@ const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, avatar
         controls={false}
       />
       {isPaused && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <button className="bg-white rounded-full p-2">
-            <FaPause />
+        <motion.div
+        className="absolute inset-0 flex items-center justify-center"
+
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+        >
+          <button className="  rounded-full shadow-xl">
+            <FaPlayCircle className="text-5xl text-[#dce775]" />
           </button>
-        </div>
+        </motion.div>
       )}
-      <div className="absolute bottom-0 left-0 p-4 text-white w-full bg-gradient-to-t from-black to-transparent">
-        <div className="flex items-center mb-2">
-          <Image src={avatarUrl} width={24} height={24} alt="Avatar" className="rounded-full mr-2" />
-          <h3 className="text-lg font-bold">{title}</h3>
+      <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Image src={avatarUrl} width={40} height={40} alt="Avatar" className="rounded-full mr-2 border-4 border-[#dce775]" />
+            <div>
+              <h3 className="text-lg font-bold text-white">{title}</h3>
+              <p className="text-sm text-gray-300">@{username}</p>
+            </div>
+          </div>
         </div>
-        <p className="text-sm">@{username}</p>
+        <div className="h-2 mt-2 relative bg-gray-700 rounded-full overflow-hidden">
+          <motion.div
+            className="absolute top-0 left-0 h-full bg-[#dce775]"
+            style={{ width: `${progress}%` }}
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.2, ease: 'linear' }}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
 export default VideoCard;
+
