@@ -28,7 +28,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ videoUrl, title, username, isActi
           }
         })
         .catch(error => {
-          console.log('Error playing video:', error); // Log any errors that occur during playback
+         
           setIsPaused(true); // Ensure state reflects paused state on error
         });
       }

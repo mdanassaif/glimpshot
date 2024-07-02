@@ -4,12 +4,12 @@ import React, { useRef, useEffect, useState } from 'react';
 import VideoCard from '../components/VideoCard';
 
 const videos = [
-  { videoUrl: 'video1.mp4', title: 'Amazing Nature', username: 'user1' },
-  { videoUrl: 'video2.mp4', title: 'City Life', username: 'user2' },
-  { videoUrl: 'video3.mp4', title: 'City Life', username: 'user2' },
-  { videoUrl: 'video4.mp4', title: 'City Life', username: 'user2' },
-  { videoUrl: 'video5.mp4', title: 'City Life', username: 'user2' },
-  { videoUrl: 'video6.mp4', title: 'City Life', username: 'user2' },
+  { videoUrl: 'video1.mp4', title: 'When dragons are never caged', username: 'HouseOFDragon' },
+  { videoUrl: 'video2.mp4', title: 'Aage kya Karna hai ?', username: ' KotaFactory' },
+  { videoUrl: 'video3.mp4', title: 'Cheezo ke peeche kyo bhagte ho?', username: 'KhushRahaKar' },
+  { videoUrl: 'video4.mp4', title: 'I found My bestie childhood video', username: 'childhoodmemory' },
+  { videoUrl: 'video5.mp4', title: 'Mah Mah Mah ', username: 'aajkalkebache' },
+  { videoUrl: 'video6.mp4', title: 'Mote hai to kya, artist hai', username: 'bodyartist' },
 ];
 
 const Reels: React.FC = () => {
