@@ -1,21 +1,21 @@
 'use client'
+
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import WelcomeMessage from '../components/WelcomeMessage';
 import VideoCard from '../components/VideoCard';
 import { videos as initialVideos } from '../videoData';
-import { debounce } from 'lodash';
+import { throttle } from 'lodash';
 import { useRouter } from 'next/navigation';
-
 
 const getRandomIndex = (max: number) => Math.floor(Math.random() * max);
 
 const Reels: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [videos, setVideos] = useState(initialVideos); // State to hold the list of videos
+  const [videos, setVideos] = useState(initialVideos); 
   const [activeIndex, setActiveIndex] = useState(getRandomIndex(initialVideos.length));
   const [activeVideo, setActiveVideo] = useState<HTMLVideoElement | null>(null);
   const [canScroll, setCanScroll] = useState(true);
-  const [showWelcomePage, setShowWelcomePage] = useState(true); // State to control showing welcome page
+  const [showWelcomePage, setShowWelcomePage] = useState(true); 
   const router = useRouter();
 
   const handlePlay = useCallback((videoElement: HTMLVideoElement) => {
@@ -25,7 +25,7 @@ const Reels: React.FC = () => {
     setActiveVideo(videoElement);
   }, [activeVideo]);
 
-  const handleScroll = debounce(() => {
+  const handleScroll = throttle(() => {
     const container = containerRef.current;
     if (container && canScroll) {
       const scrollPosition = container.scrollTop;
@@ -38,12 +38,10 @@ const Reels: React.FC = () => {
         setTimeout(() => setCanScroll(true), 1000);
       }
 
-      // Hide welcome page when scrolled
       if (scrollPosition > 0 && showWelcomePage) {
         setShowWelcomePage(false);
       }
 
-      // Load more videos when reaching the end
       if (container.scrollHeight - container.clientHeight <= scrollPosition) {
         handleLoadMoreVideos();
       }
@@ -51,7 +49,6 @@ const Reels: React.FC = () => {
   }, 100);
 
   const handleLoadMoreVideos = () => {
-    // Simulate loading more videos
     setVideos(prevVideos => [...prevVideos, ...initialVideos]);
   };
 
@@ -124,7 +121,7 @@ const Reels: React.FC = () => {
               {...video}
               isActive={index === activeIndex}
               onPlay={handlePlay}
-              videoId={video.id} // Assuming video has an 'id' property
+              videoId={video.id}
             />
           </div>
         </div>

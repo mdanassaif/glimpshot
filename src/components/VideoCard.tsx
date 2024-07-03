@@ -1,13 +1,8 @@
-/* eslint-disable react/display-name */
-'use client'
-
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { FaPlayCircle, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
- 
-
 
 interface VideoCardProps {
   videoUrl: string;
@@ -17,7 +12,6 @@ interface VideoCardProps {
   isActive: boolean;
   onPlay: (videoElement: HTMLVideoElement) => void;
   videoId: string; // Add videoId prop
-  
 }
 
 const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, username, avatarUrl, isActive, onPlay, videoId }) => {
@@ -198,22 +192,22 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
 
   return (
     <div className="relative w-full h-full flex justify-center items-center bg-black cursor-pointer" onClick={handlePlayPause}>
-   <video
-  ref={videoRef}
-  className="w-full h-full object-cover"
-  src={videoUrl}
-  controls={false}
-  loop
-  playsInline
->
-  {/* Fallback image as a poster */}
-  <Image
-    src='/placeholder.jpg'
-    alt="Placeholder Image"
-    layout="fill"
-    objectFit="cover"
-  />
-</video>
+      <video
+        ref={videoRef}
+        className="w-full h-full object-cover"
+        src={videoUrl}
+        controls={false}
+        loop
+        playsInline
+      >
+        {/* Fallback image as a poster */}
+        <Image
+          src='/placeholder.jpg'
+          alt="Placeholder Image"
+          layout="fill"
+          objectFit="cover"
+        />
+      </video>
       {isPaused && (
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
@@ -226,42 +220,41 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
           </button>
         </motion.div>
       )}
-    <div className="absolute top-1/2 right-0 mr-3 transform -translate-y-1/2 flex flex-col items-center space-y-2">
-      <button 
-        onClick={handleLike} 
-        className={`rounded-full p-2 ${liked ? 'bg-[#dce775]' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
-        style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
-      >
-        <FaThumbsUp 
-          className={`text-2xl ${liked ? 'text-black' : 'text-white'} `}
-          style={{ 
-            textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)' 
-          }}
-        />
-      </button>
-      <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{likes}</span>
-      <button 
-        onClick={handleDislike} 
-        className={`rounded-full p-2 ${disliked ? 'bg-red-500' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
-        style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
-      >
-        <FaThumbsDown 
-          className={`text-2xl ${disliked ? 'text-black' : 'text-white'}`}
-          style={{ 
-            textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)' 
-          }}
-        />
-      </button>
-      <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{dislikes}</span>
-    </div>
-
-      <div className="absolute bottom-5 left-0 w-full  p-4">
+      <div className="absolute top-1/2 right-0 mr-3 transform -translate-y-1/2 flex flex-col items-center space-y-2">
+        <button 
+          onClick={handleLike} 
+          className={`rounded-full p-2 ${liked ? 'bg-[#dce775]' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
+          style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
+        >
+          <FaThumbsUp 
+            className={`text-2xl ${liked ? 'text-black' : 'text-white'} `}
+            style={{ 
+              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)' 
+            }}
+          />
+        </button>
+        <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{likes}</span>
+        <button 
+          onClick={handleDislike} 
+          className={`rounded-full p-2 ${disliked ? 'bg-red-500' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
+          style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
+        >
+          <FaThumbsDown 
+            className={`text-2xl ${disliked ? 'text-black' : 'text-white'}`}
+            style={{ 
+              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)' 
+            }}
+          />
+        </button>
+        <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{dislikes}</span>
+      </div>
+      <div className="absolute bottom-0 left-0 w-full  p-4 bg-[#dce7752a]">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Image src={avatarUrl} width={40} height={40} alt="Avatar" className="rounded-full mr-2 border-2 border-[#dce775]" />
             <div>
-              <h3 className="text-lg font-bold text-white">{title}</h3>
-              <p className="text-sm text-gray-300">@{username}</p>
+              <h3 className="text-lg text-[#dce775] font-bold drop-shadow-2xl ">{title}</h3>
+              <p className="text-sm text-[#25dac8] drop-shadow-2xl">@{username}</p>
             </div>
           </div>
         </div>
@@ -275,8 +268,11 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
           />
         </div>
       </div>
+
     </div>
   );
 });
+
+VideoCard.displayName = 'VideoCard';
 
 export default VideoCard;

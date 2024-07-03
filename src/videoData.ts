@@ -469,24 +469,6 @@ export const videos = [
     dislikes: 0 
   },
   { 
-    id: 'unique-id-53',
-    videoUrl: 'video53.mp4', 
-    title: 'Refrigerator of different countries', 
-    username: 'weirdThings', 
-    avatarUrl: toBase64(multiavatar('weirdThings')), // Updated to use multiavatar
-    likes: 0, 
-    dislikes: 0 
-  },
-  { 
-    id: 'unique-id-54',
-    videoUrl: 'video54.mp4', 
-    title: 'No Weight No Problem', 
-    username: 'cuteAnimals', 
-    avatarUrl: toBase64(multiavatar('cuteAnimals')), // Updated to use multiavatar
-    likes: 0, 
-    dislikes: 0 
-  },
-  { 
     id: 'unique-id-55',
     videoUrl: 'video55.mp4', 
     title: 'Avoid this during meeting', 
