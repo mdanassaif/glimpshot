@@ -2,10 +2,13 @@
 
  
 // components/WelcomeMessage.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import Modal from './modalbox';
 
 const WelcomeMessage: React.FC<{ onStart: () => void }> = ({ onStart }) => {
+
+  const [showModal, setShowModal] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -95,7 +98,7 @@ const WelcomeMessage: React.FC<{ onStart: () => void }> = ({ onStart }) => {
         transition={{ delay: 2.3, duration: 0.5, ease: 'easeOut' }}
         className="text-sm md:text-xl text-center mb-8 text-[#374e51]"
       >
-       32 shorts video will make you giggling.
+       54 short videos will make you felicitous.
       </motion.p>
       <motion.button
       whileHover={{ scale: 1.05, rotate: -3 }} // Scale and rotate on hover
@@ -104,10 +107,19 @@ const WelcomeMessage: React.FC<{ onStart: () => void }> = ({ onStart }) => {
       initial={{ scale: 1 }} // Initial scale when component mounts
       animate={{ scale: [1, 1.05, 1], rotate: [0, -3, 0] }} // Animation sequence
       transition={{ repeat: Infinity, duration: 1.5, repeatDelay: 0.5 }} // Repeat animation infinitely
-      className="bg-[#a2ebc0] hover:bg-[#65b168d8] text-[#e53835da] hover:text-[#000000d8] font-bold py-3 px-6 rounded-lg shadow-lg"
+      className="bg-[#a2ebc0] hover:bg-[#65b168d8] text-[#e53835da] hover:text-[#ffffffd8] font-bold py-3 px-6 rounded-lg shadow-lg"
     >
       Go Watch Glimps
     </motion.button>
+
+     {/* Information link */}
+     <p
+        className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-[#092943] text-md cursor-pointer underline"
+        onClick={() => setShowModal(true)}
+      >
+        What is Glimpshot ?
+      </p>
+      {showModal && <Modal onClose={() => setShowModal(false)} />}
     </motion.div>
   );
 };

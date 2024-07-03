@@ -6,6 +6,8 @@ import { FaPlayCircle, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+ 
+
 
 interface VideoCardProps {
   videoUrl: string;
@@ -15,6 +17,7 @@ interface VideoCardProps {
   isActive: boolean;
   onPlay: (videoElement: HTMLVideoElement) => void;
   videoId: string; // Add videoId prop
+  
 }
 
 const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, username, avatarUrl, isActive, onPlay, videoId }) => {
@@ -195,14 +198,22 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
 
   return (
     <div className="relative w-full h-full flex justify-center items-center bg-black cursor-pointer" onClick={handlePlayPause}>
-      <video
-        ref={videoRef}
-        className="w-full h-full object-cover"
-        src={videoUrl}
-        loop
-        playsInline
-        controls={false}
-      />
+   <video
+  ref={videoRef}
+  className="w-full h-full object-cover"
+  src={videoUrl}
+  controls={false}
+  loop
+  playsInline
+>
+  {/* Fallback image as a poster */}
+  <Image
+    src='/placeholder.jpg'
+    alt="Placeholder Image"
+    layout="fill"
+    objectFit="cover"
+  />
+</video>
       {isPaused && (
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
