@@ -1,4 +1,9 @@
-// videoData.ts
+import multiavatar from '@multiavatar/multiavatar';
+
+// Helper function to convert SVG to Base64
+const toBase64 = (str: string) => {
+  return `data:image/svg+xml;base64,${Buffer.from(str).toString('base64')}`;
+};
 
 export const videos = [
   { 
@@ -6,7 +11,7 @@ export const videos = [
     videoUrl: 'video26.mp4', 
     title: 'Aaj To sunday hai yay yay', 
     username: 'sundayFood', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('sundayFood')),  
     likes: 0, 
     dislikes: 0 
   },
@@ -15,7 +20,7 @@ export const videos = [
     videoUrl: 'video1.mp4', 
     title: 'When dragons are never caged', 
     username: 'houseOfDragon', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('houseOfDragon')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -24,25 +29,17 @@ export const videos = [
     videoUrl: 'video2.mp4', 
     title: 'Aage kya Karna hai ?', 
     username: 'kotaFactory', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('kotaFactory')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
-  { 
-    id: 'unique-id-4',
-    videoUrl: 'video3.mp4', 
-    title: 'Cheezo ke peeche kyo bhagte ho?', 
-    username: 'khushRahaKar', 
-    avatarUrl: '/avatar1.png',
-    likes: 0, 
-    dislikes: 0 
-  },
+
   { 
     id: 'unique-id-5',
     videoUrl: 'video4.mp4', 
     title: 'I found My bestie childhood video', 
     username: 'childhoodMemory', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('childhoodMemory')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -51,7 +48,7 @@ export const videos = [
     videoUrl: 'video5.mp4', 
     title: 'Mah Mah Mah', 
     username: 'aajkalKeBache', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('aajkalKeBache')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -60,7 +57,7 @@ export const videos = [
     videoUrl: 'video6.mp4', 
     title: 'Mote hai to kya, artist hai', 
     username: 'bodyArtist', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('bodyArtist')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -69,16 +66,26 @@ export const videos = [
     videoUrl: 'video7.mp4', 
     title: 'Take a breath....', 
     username: 'fullMotivation', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('fullMotivation')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+
+  { 
+    id: 'unique-id-4',
+    videoUrl: 'video3.mp4', 
+    title: 'Cheezo ke peeche mat bhago', 
+    username: 'khushRahaKar', 
+    avatarUrl: toBase64(multiavatar('khushRahaKar')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
   { 
     id: 'unique-id-9',
     videoUrl: 'video8.mp4', 
-    title: 'All couple must spend time & enjoy', 
+    title: 'Couple must spend time together.', 
     username: 'enjoyWithLove', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('enjoyWithLove')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -96,7 +103,7 @@ export const videos = [
     videoUrl: 'video10.mp4', 
     title: 'Artist live Out of the box', 
     username: 'artofThings', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('artofThings')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -105,7 +112,7 @@ export const videos = [
     videoUrl: 'video11.mp4', 
     title: 'When Beatboxer friends meet', 
     username: 'BeatBoxers', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('BeatBoxers')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -114,7 +121,7 @@ export const videos = [
     videoUrl: 'video12.mp4', 
     title: 'Just say A A A and you are viral.', 
     username: 'khabyMusic', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('khabyMusic')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -123,7 +130,7 @@ export const videos = [
     videoUrl: 'video13.mp4', 
     title: 'Pyaar mein jhagde chess ki trah', 
     username: 'loveExplained', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('loveExplained')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -132,7 +139,7 @@ export const videos = [
     videoUrl: 'video14.mp4', 
     title: 'When Alan becker write an email', 
     username: 'alanbecker', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('alanbecker')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -141,7 +148,16 @@ export const videos = [
     videoUrl: 'video15.mp4', 
     title: 'Cutest glummy smile', 
     username: 'cutekids', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('cutekids')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-40',
+    videoUrl: 'video40.mp4', 
+    title: "Easy to learn coding on sololearn", 
+    username: 'sololearn', 
+    avatarUrl: '/sololearn.png', // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -150,7 +166,7 @@ export const videos = [
     videoUrl: 'video16.mp4', 
     title: 'A love song for goat', 
     username: 'animalLover', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('animalLover')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -159,7 +175,7 @@ export const videos = [
     videoUrl: 'video17.mp4', 
     title: 'This song took my all oxyzen', 
     username: 'realSingers', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('realSingers')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -168,7 +184,34 @@ export const videos = [
     videoUrl: 'video18.mp4', 
     title: 'Learn what is emotional damage', 
     username: 'funLearning', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('funLearning')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-49',
+    videoUrl: 'video49.mp4', 
+    title: 'Your parents still see you as a kid', 
+    username: 'funnyVideos', 
+    avatarUrl: toBase64(multiavatar('funnyVideos')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-50',
+    videoUrl: 'video50.mp4', 
+    title: 'Life is betrayal, but we are not.', 
+    username: 'Life Sucked', 
+    avatarUrl: toBase64(multiavatar('lifesucked')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-51',
+    videoUrl: 'video51.mp4', 
+    title: 'Local hai bhai , jaane do', 
+    username: 'funnyVideos', 
+    avatarUrl: toBase64(multiavatar('funnyVideos')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -177,7 +220,7 @@ export const videos = [
     videoUrl: 'video19.mp4', 
     title: 'Today I learn cook pasta but..', 
     username: 'exploreLife', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('exploreLife')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -186,7 +229,34 @@ export const videos = [
     videoUrl: 'video20.mp4', 
     title: 'Being honest is matter for loved one.', 
     username: 'loveTips', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('loveTips')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-53',
+    videoUrl: 'video53.mp4', 
+    title: 'Refrigerator of different countries', 
+    username: 'worldFactFinder', 
+    avatarUrl: toBase64(multiavatar('worldFactFinder')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-54',
+    videoUrl: 'video54.mp4', 
+    title: 'No Weight No Problem', 
+    username: 'cuteAnimals', 
+    avatarUrl: toBase64(multiavatar('cuteAnimals')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-55',
+    videoUrl: 'video55.mp4', 
+    title: 'Avoid this during meeting', 
+    username: 'TipsForImprovement', 
+    avatarUrl: toBase64(multiavatar('TipsForImprovement')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -195,7 +265,7 @@ export const videos = [
     videoUrl: 'video21.mp4', 
     title: 'Hey Siri, I am failed : (', 
     username: 'siriAdvices', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('siriAdvices')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -204,34 +274,34 @@ export const videos = [
     videoUrl: 'video22.mp4', 
     title: 'What the hack I just wacthed?', 
     username: 'amazingThings', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('amazingThings')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
   { 
     id: 'unique-id-24',
     videoUrl: 'video23.mp4', 
-    title: 'How to make Chatne-wala Kulfi?', 
-    username: 'bestChef', 
-    avatarUrl: '/avatar2.png',
+    title: 'How to celebrate Dusshera!', 
+    username: 'festivalMoods', 
+    avatarUrl: toBase64(multiavatar('festivalMoods')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
   { 
     id: 'unique-id-25',
     videoUrl: 'video24.mp4', 
-    title: 'I know I am slow but he ate all', 
-    username: 'foodies', 
-    avatarUrl: '/avatar2.png',
+    title: 'How I can build design?', 
+    username: 'graphichGuru', 
+    avatarUrl: toBase64(multiavatar('graphichGuru')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
   { 
     id: 'unique-id-26',
     videoUrl: 'video25.mp4', 
-    title: 'Abhi bechara kuch to nahi banna', 
-    username: 'cuteBaatein', 
-    avatarUrl: '/avatar2.png',
+    title: 'Future car for girls', 
+    username: 'carsLover', 
+    avatarUrl: toBase64(multiavatar('carsLover')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -240,7 +310,7 @@ export const videos = [
     videoUrl: 'video27.mp4', 
     title: 'I know tum hoshiyaar ho but', 
     username: 'kidsThinking', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('kidsThinking')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -249,7 +319,7 @@ export const videos = [
     videoUrl: 'video28.mp4', 
     title: 'A genuine partner', 
     username: 'genuine', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('genuine')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -258,7 +328,7 @@ export const videos = [
     videoUrl: 'video29.mp4', 
     title: 'How to get slim without avoid food.', 
     username: 'siriTips', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('siriTips')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -267,7 +337,7 @@ export const videos = [
     videoUrl: 'video30.mp4', 
     title: 'Mera Sapna pura hogya aaj', 
     username: 'weirdThings', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('weirdThings')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -276,7 +346,7 @@ export const videos = [
     videoUrl: 'video31.mp4', 
     title: 'In On At what the heck???', 
     username: 'englishTips', 
-    avatarUrl: '/avatar2.png',
+    avatarUrl: toBase64(multiavatar('englishTips')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
@@ -285,8 +355,173 @@ export const videos = [
     videoUrl: 'video32.mp4', 
     title: 'Imagine How powerful I would..', 
     username: 'amazingThings', 
-    avatarUrl: '/avatar1.png',
+    avatarUrl: toBase64(multiavatar('amazingThings')), // Updated to use multiavatar
     likes: 0, 
     dislikes: 0 
   },
-];
+  { 
+    id: 'unique-id-34',
+    videoUrl: 'video34.mp4', 
+    title: 'I never write poem for you', 
+    username: 'writepoem', 
+    avatarUrl: toBase64(multiavatar('writepoem')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-35',
+    videoUrl: 'video35.mp4', 
+    title: 'I never removed you from my heart', 
+    username: 'writepoem', 
+    avatarUrl: toBase64(multiavatar('writepoem')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-36',
+    videoUrl: 'video36.mp4', 
+    title: 'Life is coffee', 
+    username: 'cofeelover', 
+    avatarUrl: toBase64(multiavatar('cofeelover')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-37',
+    videoUrl: 'video37.mp4', 
+    title: 'JS Animation Libraries', 
+    username: 'javascriptHero', 
+    avatarUrl: toBase64(multiavatar('javascriptHero')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-38',
+    videoUrl: 'video38.mp4', 
+    title: 'Suddenly He is now.', 
+    username: 'loveHearBreaker', 
+    avatarUrl: toBase64(multiavatar('loveHearBreaker')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-39',
+    videoUrl: 'video39.mp4', 
+    title: 'I am in love with this view.', 
+    username: 'amazingViews', 
+    avatarUrl: toBase64(multiavatar('amazingViews')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+ 
+  { 
+    id: 'unique-id-41',
+    videoUrl: 'video41.mp4', 
+    title: 'Sololearn said coding is not hard.', 
+    username: 'sololearn', 
+    avatarUrl: '/sololearn.png', // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-42',
+    videoUrl: 'video42.mp4', 
+    title: 'First Time trying to smile', 
+    username: 'polyglotAdventures', 
+    avatarUrl: toBase64(multiavatar('polyglotAdventures')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-43',
+    videoUrl: 'video43.mp4', 
+    title: 'This view caged my soul.', 
+    username: 'amazingViews', 
+    avatarUrl: toBase64(multiavatar('amazingViews')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-44',
+    videoUrl: 'video44.mp4', 
+    title: 'NWhen ew Semester Started', 
+    username: 'schoolLife', 
+    avatarUrl: toBase64(multiavatar('schoolLife')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-45',
+    videoUrl: 'video45.mp4', 
+    title: 'First income as programmer', 
+    username: 'Life Sucked', 
+    avatarUrl: toBase64(multiavatar('lifesucked')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-46',
+    videoUrl: 'video46.mp4', 
+    title: 'Tera alvida bhari pada is dil ko', 
+    username: 'poetryLover', 
+    avatarUrl: toBase64(multiavatar('poetryLover')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-47',
+    videoUrl: 'video47.mp4', 
+    title: 'Life hacks you need to know', 
+    username: 'MotivationGuru', 
+    avatarUrl: toBase64(multiavatar('MotivationGuru')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-48',
+    videoUrl: 'video48.mp4', 
+    title: 'Yoga for beginners', 
+    username: 'poetryLover', 
+    avatarUrl: toBase64(multiavatar('poetryLover')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+ 
+  { 
+    id: 'unique-id-52',
+    videoUrl: 'video52.mp4', 
+    title: 'Not getting money yet just..', 
+    username: 'Life Sucked', 
+    avatarUrl: toBase64(multiavatar('lifesucked')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-53',
+    videoUrl: 'video53.mp4', 
+    title: 'Refrigerator of different countries', 
+    username: 'worldFactFinder', 
+    avatarUrl: toBase64(multiavatar('worldFactFinder')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-54',
+    videoUrl: 'video54.mp4', 
+    title: 'No Weight No Problem', 
+    username: 'cuteAnimals', 
+    avatarUrl: toBase64(multiavatar('cuteAnimals')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+  { 
+    id: 'unique-id-55',
+    videoUrl: 'video55.mp4', 
+    title: 'Avoid this during meeting', 
+    username: 'TipsForImprovement', 
+    avatarUrl: toBase64(multiavatar('TipsForImprovement')), // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
+
+]

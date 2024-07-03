@@ -216,17 +216,35 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
         </motion.div>
       )}
     <div className="absolute top-1/2 right-0 mr-3 transform -translate-y-1/2 flex flex-col items-center space-y-2">
-  <button onClick={handleLike} className={`rounded-full p-2 ${liked ? 'bg-[#dce775]' : 'bg-transparent'}`}>
-    <FaThumbsUp className="text-2xl text-white" />
-  </button>
-  <span className="text-white">{likes}</span>
-  <button onClick={handleDislike} className={`rounded-full p-2 ${disliked ? 'bg-red-500' : 'bg-transparent'}`}>
-    <FaThumbsDown className="text-2xl text-white" />
-  </button>
-  <span className="text-white">{dislikes}</span>
-</div>
+      <button 
+        onClick={handleLike} 
+        className={`rounded-full p-2 ${liked ? 'bg-[#dce775]' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
+        style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
+      >
+        <FaThumbsUp 
+          className={`text-2xl ${liked ? 'text-black' : 'text-white'} `}
+          style={{ 
+            textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)' 
+          }}
+        />
+      </button>
+      <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{likes}</span>
+      <button 
+        onClick={handleDislike} 
+        className={`rounded-full p-2 ${disliked ? 'bg-red-500' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
+        style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
+      >
+        <FaThumbsDown 
+          className={`text-2xl ${disliked ? 'text-black' : 'text-white'}`}
+          style={{ 
+            textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)' 
+          }}
+        />
+      </button>
+      <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{dislikes}</span>
+    </div>
 
-      <div className="absolute bottom-10 left-0 w-full  p-4">
+      <div className="absolute bottom-5 left-0 w-full  p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Image src={avatarUrl} width={40} height={40} alt="Avatar" className="rounded-full mr-2 border-4 border-[#dce775]" />
