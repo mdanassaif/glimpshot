@@ -98,7 +98,7 @@ const WelcomeMessage: React.FC<{ onStart: () => void }> = ({ onStart }) => {
         transition={{ delay: 2.3, duration: 0.5, ease: 'easeOut' }}
         className="text-sm md:text-xl text-center mb-8 text-[#374e51]"
       >
-       54 short videos will make you felicitous.
+       52 short videos will make you felicitous.
       </motion.p>
       <motion.button
       whileHover={{ scale: 1.05, rotate: -3 }} // Scale and rotate on hover
@@ -107,7 +107,7 @@ const WelcomeMessage: React.FC<{ onStart: () => void }> = ({ onStart }) => {
       initial={{ scale: 1 }} // Initial scale when component mounts
       animate={{ scale: [1, 1.05, 1], rotate: [0, -3, 0] }} // Animation sequence
       transition={{ repeat: Infinity, duration: 1.5, repeatDelay: 0.5 }} // Repeat animation infinitely
-      className="bg-[#a2ebc0] hover:bg-[#65b168d8] text-[#e53835da] hover:text-[#ffffffd8] font-bold py-3 px-6 rounded-lg shadow-lg"
+      className="bg-[#a2ebc0] hover:bg-[#647d6e] text-[#e53835da] hover:text-[#ffffffd8] font-bold py-3 px-6 rounded-lg shadow-lg"
     >
       Go Watch Glimps
     </motion.button>

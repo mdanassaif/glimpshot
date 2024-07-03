@@ -258,7 +258,7 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
       <div className="absolute bottom-5 left-0 w-full  p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <Image src={avatarUrl} width={40} height={40} alt="Avatar" className="rounded-full mr-2 border-4 border-[#dce775]" />
+            <Image src={avatarUrl} width={40} height={40} alt="Avatar" className="rounded-full mr-2 border-2 border-[#dce775]" />
             <div>
               <h3 className="text-lg font-bold text-white">{title}</h3>
               <p className="text-sm text-gray-300">@{username}</p>
