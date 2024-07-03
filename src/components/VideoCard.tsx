@@ -65,11 +65,95 @@ const VideoCard: React.FC<VideoCardProps> = ({
   };
 
   const handleLike = async () => {
-    // Handle like logic
+    try {
+      if (!liked && !disliked) {
+        setLikes(prevLikes => prevLikes + 1);
+        setLiked(true);
+
+        // Example: Store like in MongoDB
+        const response = await fetch('/api/likes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ videoId, action: 'like' }), // Use videoId prop
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to store like');
+        }
+      } else if (liked) {
+        setLikes(prevLikes => prevLikes - 1);
+        setLiked(false);
+      } else if (disliked) {
+        setLikes(prevLikes => prevLikes + 1);
+        setDislikes(prevDislikes => prevDislikes - 1);
+        setLiked(true);
+        setDisliked(false);
+
+        // Example: Update like in MongoDB
+        const response = await fetch('/api/likes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ videoId, action: 'like' }), // Use videoId prop
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update like');
+        }
+      }
+    } catch (error) {
+      console.error('Error handling like:', error);
+      // Handle error scenario
+    }
   };
 
   const handleDislike = async () => {
-    // Handle dislike logic
+    try {
+      if (!liked && !disliked) {
+        setDislikes(prevDislikes => prevDislikes + 1);
+        setDisliked(true);
+
+        // Example: Store dislike in MongoDB
+        const response = await fetch('/api/likes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ videoId, action: 'dislike' }), // Use videoId prop
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to store dislike');
+        }
+      } else if (disliked) {
+        setDislikes(prevDislikes => prevDislikes - 1);
+        setDisliked(false);
+      } else if (liked) {
+        setDislikes(prevDislikes => prevDislikes + 1);
+        setLikes(prevLikes => prevLikes - 1);
+        setDisliked(true);
+        setLiked(false);
+
+        // Example: Update dislike in MongoDB
+        const response = await fetch('/api/likes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ videoId, action: 'dislike' }), // Use videoId prop
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update dislike');
+        }
+      }
+    } catch (error) {
+      console.error('Error handling dislike:', error);
+      // Handle error scenario
+    }
   };
 
   useEffect(() => {
