@@ -4,8 +4,8 @@ import ChatInGroup from '../../public/aboutus.png';
 
 const Modal = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-      <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg overflow-y-auto">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50 ">
+      <div className="bg-white w-[85%] max-w-md p-6 rounded-lg shadow-lg overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-bold text-[#a8b720]">About This Glimpshot</h2>
           <button onClick={onClose} className="text-[#a8b720] hover:text-[#717b17] focus:outline-none">

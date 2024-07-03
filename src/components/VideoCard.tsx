@@ -1,4 +1,6 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+// VideoCard.tsx
+
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { FaPlayCircle, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -11,17 +13,25 @@ interface VideoCardProps {
   avatarUrl: string;
   isActive: boolean;
   onPlay: (videoElement: HTMLVideoElement) => void;
-  videoId: string; // Add videoId prop
+  videoId: string;
 }
 
-const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, username, avatarUrl, isActive, onPlay, videoId }) => {
+const VideoCard: React.FC<VideoCardProps> = ({
+  videoUrl,
+  title,
+  username,
+  avatarUrl,
+  isActive,
+  onPlay,
+  videoId,
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPaused, setIsPaused] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [likes, setLikes] = useState(0); // State to hold likes count
-  const [dislikes, setDislikes] = useState(0); // State to hold dislikes count
-  const [liked, setLiked] = useState(false); // State to track if current user liked the video
-  const [disliked, setDisliked] = useState(false); // State to track if current user disliked the video
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
   const router = useRouter();
 
   const playVideo = useCallback(() => {
@@ -43,8 +53,27 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
     }
   }, [onPlay]);
 
+  const handlePlayPause = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        playVideo();
+      } else {
+        videoRef.current.pause();
+        setIsPaused(true);
+      }
+    }
+  };
+
+  const handleLike = async () => {
+    // Handle like logic
+  };
+
+  const handleDislike = async () => {
+    // Handle dislike logic
+  };
+
   useEffect(() => {
-    // Fetch initial likes and dislikes from MongoDB
+    // Fetch initial likes and dislikes from MongoDB or API
     const fetchLikesAndDislikes = async () => {
       try {
         const response = await fetch(`/api/likes?videoId=${videoId}`);
@@ -75,120 +104,21 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
 
   useEffect(() => {
     const updateProgress = () => {
-      if (videoRef.current) {
+      if (videoRef.current && videoRef.current.duration) {
         const currentTime = videoRef.current.currentTime;
         const duration = videoRef.current.duration;
-        setProgress((currentTime / duration) * 100);
+        const calculatedProgress = (currentTime / duration) * 100;
+
+        if (!isNaN(calculatedProgress)) {
+          setProgress(calculatedProgress);
+        }
       }
     };
 
     const interval = setInterval(updateProgress, 200);
 
     return () => clearInterval(interval);
-  }, []);
-
-  const handlePlayPause = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        playVideo();
-      } else {
-        videoRef.current.pause();
-        setIsPaused(true);
-      }
-    }
-  };
-
-  const handleLike = async () => {
-    try {
-      if (!liked && !disliked) {
-        setLikes(prevLikes => prevLikes + 1);
-        setLiked(true);
-
-        // Example: Store like in MongoDB
-        const response = await fetch('/api/likes', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ videoId, action: 'like' }), // Use videoId prop
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to store like');
-        }
-      } else if (liked) {
-        setLikes(prevLikes => prevLikes - 1);
-        setLiked(false);
-      } else if (disliked) {
-        setLikes(prevLikes => prevLikes + 1);
-        setDislikes(prevDislikes => prevDislikes - 1);
-        setLiked(true);
-        setDisliked(false);
-
-        // Example: Update like in MongoDB
-        const response = await fetch('/api/likes', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ videoId, action: 'like' }), // Use videoId prop
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to update like');
-        }
-      }
-    } catch (error) {
-      console.error('Error handling like:', error);
-      // Handle error scenario
-    }
-  };
-
-  const handleDislike = async () => {
-    try {
-      if (!liked && !disliked) {
-        setDislikes(prevDislikes => prevDislikes + 1);
-        setDisliked(true);
-
-        // Example: Store dislike in MongoDB
-        const response = await fetch('/api/likes', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ videoId, action: 'dislike' }), // Use videoId prop
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to store dislike');
-        }
-      } else if (disliked) {
-        setDislikes(prevDislikes => prevDislikes - 1);
-        setDisliked(false);
-      } else if (liked) {
-        setDislikes(prevDislikes => prevDislikes + 1);
-        setLikes(prevLikes => prevLikes - 1);
-        setDisliked(true);
-        setLiked(false);
-
-        // Example: Update dislike in MongoDB
-        const response = await fetch('/api/likes', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ videoId, action: 'dislike' }), // Use videoId prop
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to update dislike');
-        }
-      }
-    } catch (error) {
-      console.error('Error handling dislike:', error);
-      // Handle error scenario
-    }
-  };
+  }, [videoRef.current?.currentTime, videoRef.current?.duration]);
 
   return (
     <div className="relative w-full h-full flex justify-center items-center bg-black cursor-pointer" onClick={handlePlayPause}>
@@ -199,15 +129,8 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
         controls={false}
         loop
         playsInline
-      >
-        {/* Fallback image as a poster */}
-        <Image
-          src='/placeholder.jpg'
-          alt="Placeholder Image"
-          layout="fill"
-          objectFit="cover"
-        />
-      </video>
+      />
+
       {isPaused && (
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
@@ -215,39 +138,41 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
           animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
-          <button className="rounded-full shadow-xl">
+          <button onClick={handlePlayPause} className="rounded-full shadow-xl">
             <FaPlayCircle className="text-5xl text-[#dce775]" />
           </button>
         </motion.div>
       )}
+
       <div className="absolute top-1/2 right-0 mr-3 transform -translate-y-1/2 flex flex-col items-center space-y-2">
-        <button 
-          onClick={handleLike} 
+        <button
+          onClick={handleLike}
           className={`rounded-full p-2 ${liked ? 'bg-[#dce775]' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
           style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
         >
-          <FaThumbsUp 
+          <FaThumbsUp
             className={`text-2xl ${liked ? 'text-black' : 'text-white'} `}
-            style={{ 
-              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)' 
+            style={{
+              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)',
             }}
           />
         </button>
         <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{likes}</span>
-        <button 
-          onClick={handleDislike} 
+        <button
+          onClick={handleDislike}
           className={`rounded-full p-2 ${disliked ? 'bg-red-500' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
           style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
         >
-          <FaThumbsDown 
+          <FaThumbsDown
             className={`text-2xl ${disliked ? 'text-black' : 'text-white'}`}
-            style={{ 
-              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)' 
+            style={{
+              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)',
             }}
           />
         </button>
         <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{dislikes}</span>
       </div>
+
       <div className="absolute bottom-0 left-0 w-full  p-4 bg-[#dce7752a]">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -268,11 +193,8 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(({ videoUrl, title, usern
           />
         </div>
       </div>
-
     </div>
   );
-});
-
-VideoCard.displayName = 'VideoCard';
+};
 
 export default VideoCard;
