@@ -137,7 +137,7 @@ const Reels: React.FC = () => {
     // Simulate loading time
     setTimeout(() => {
       setIsLoading(false); // Set loading state to false after 4 seconds (adjust as needed)
-    }, 4500);
+    }, 3500);
   }, []);
 
   useEffect(() => {
