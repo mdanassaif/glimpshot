@@ -282,10 +282,16 @@ const VideoCard: React.FC<VideoCardProps> = ({
           </div>
         </div>
         <div className="h-1 bg-gray-800 mt-2 relative w-full">
-          <div
-            className="h-1 bg-[#dce775]"
-            style={{ width: `${progress}%` }}
-          />
+   
+        <div className="h-1 bg-gray-800 mt-2 relative w-full">
+  <motion.div
+    className="h-1 bg-[#dce775]"
+    initial={{ width: 0 }}
+    animate={{ width: `${progress}%` }}
+    transition={{ duration: 0.5, ease: "linear" }}
+  />
+</div>
+
         </div>
       </div>
     </div>
