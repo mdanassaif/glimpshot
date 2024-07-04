@@ -486,5 +486,14 @@ export const videos = [
     likes: 0, 
     dislikes: 0 
   },
+  { 
+    id: 'unique-id-69',
+    videoUrl: 'video69.mp4', 
+    title: 'For GTR R35 Lovers', 
+    username: 'aditya Uniyal', 
+    avatarUrl: '/newVideo.jpg', // Updated to use multiavatar
+    likes: 0, 
+    dislikes: 0 
+  },
 
 ]
