@@ -22,11 +22,27 @@ const Reels: React.FC = () => {
 
   const handlePlay = useCallback((videoElement: HTMLVideoElement) => {
     if (activeVideo && activeVideo !== videoElement) {
-      activeVideo.pause();
+      activeVideo.pause(); // Pause the currently active video
     }
     setActiveVideo(videoElement);
-    videoElement.play(); // Start playing the new video
+    
+    // Check if videoElement is paused or not before attempting to play
+    if (videoElement.paused) {
+      const playPromise = videoElement.play();
+  
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            // Video started playing successfully
+          })
+          .catch((error) => {
+            console.error('Error playing video:', error);
+            // Handle error scenario
+          });
+      }
+    }
   }, [activeVideo]);
+  
   
 
   const handleScroll = throttle(() => {
