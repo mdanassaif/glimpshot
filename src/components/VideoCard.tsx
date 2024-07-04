@@ -267,7 +267,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
         <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{dislikes}</span>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-[#000000] to-transparent">
+      <div className="absolute bottom-0 left-0 w-full p-10 bg-gradient-to-t from-[#000000] to-transparent">
         <div className="flex items-center space-x-2">
           <Image
             src={avatarUrl}

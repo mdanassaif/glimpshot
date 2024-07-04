@@ -48,3 +48,8 @@ p strong{
   color:#838d2a;
 }
 
+
+.video-card {
+  height: 100vh; /* Adjust this as needed */
+  overflow: hidden; /* Prevent overflow issues */
+}

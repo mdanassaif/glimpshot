@@ -25,7 +25,9 @@ const Reels: React.FC = () => {
       activeVideo.pause();
     }
     setActiveVideo(videoElement);
+    videoElement.play(); // Start playing the new video
   }, [activeVideo]);
+  
 
   const handleScroll = throttle(() => {
     const container = containerRef.current;
