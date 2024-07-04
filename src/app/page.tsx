@@ -1,3 +1,5 @@
+// Reels.tsx
+
 'use client'
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
@@ -52,6 +54,27 @@ const Reels: React.FC = () => {
     setVideos(prevVideos => [...prevVideos, ...initialVideos]);
   };
 
+  const smoothScroll = (deltaY: number) => {
+    const container = containerRef.current;
+    if (container) {
+      let start = container.scrollTop;
+      let end = start + deltaY;
+      let startTime: number | null = null;
+
+      const step = (timestamp: number) => {
+        if (!startTime) startTime = timestamp;
+        const progress = timestamp - startTime;
+        const scrollPosition = start + (end - start) * Math.min(progress / 300, 1);
+        container.scrollTop = scrollPosition;
+        if (progress < 300) {
+          requestAnimationFrame(step);
+        }
+      };
+
+      requestAnimationFrame(step);
+    }
+  };
+
   useEffect(() => {
     const container = containerRef.current;
 
@@ -71,11 +94,11 @@ const Reels: React.FC = () => {
         const touchDiff = touchStartY - touchEndY;
 
         if (touchDiff > 50 && canScroll) {
-          container.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+          smoothScroll(window.innerHeight);
           setCanScroll(false);
           setTimeout(() => setCanScroll(true), 1000);
         } else if (touchDiff < -50 && canScroll) {
-          container.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
+          smoothScroll(-window.innerHeight);
           setCanScroll(false);
           setTimeout(() => setCanScroll(true), 1000);
         }

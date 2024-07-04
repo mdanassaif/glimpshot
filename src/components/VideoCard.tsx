@@ -64,10 +64,11 @@ const VideoCard: React.FC<VideoCardProps> = ({
     }
   };
 
-  const handleLike = async () => {
+  const handleLike = async (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent the click event from bubbling up to the parent div
     try {
       if (!liked && !disliked) {
-        setLikes(prevLikes => prevLikes + 1);
+        setLikes((prevLikes) => prevLikes + 1);
         setLiked(true);
 
         // Example: Store like in MongoDB
@@ -83,11 +84,11 @@ const VideoCard: React.FC<VideoCardProps> = ({
           throw new Error('Failed to store like');
         }
       } else if (liked) {
-        setLikes(prevLikes => prevLikes - 1);
+        setLikes((prevLikes) => prevLikes - 1);
         setLiked(false);
       } else if (disliked) {
-        setLikes(prevLikes => prevLikes + 1);
-        setDislikes(prevDislikes => prevDislikes - 1);
+        setLikes((prevLikes) => prevLikes + 1);
+        setDislikes((prevDislikes) => prevDislikes - 1);
         setLiked(true);
         setDisliked(false);
 
@@ -110,10 +111,11 @@ const VideoCard: React.FC<VideoCardProps> = ({
     }
   };
 
-  const handleDislike = async () => {
+  const handleDislike = async (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent the click event from bubbling up to the parent div
     try {
       if (!liked && !disliked) {
-        setDislikes(prevDislikes => prevDislikes + 1);
+        setDislikes((prevDislikes) => prevDislikes + 1);
         setDisliked(true);
 
         // Example: Store dislike in MongoDB
@@ -129,11 +131,11 @@ const VideoCard: React.FC<VideoCardProps> = ({
           throw new Error('Failed to store dislike');
         }
       } else if (disliked) {
-        setDislikes(prevDislikes => prevDislikes - 1);
+        setDislikes((prevDislikes) => prevDislikes - 1);
         setDisliked(false);
       } else if (liked) {
-        setDislikes(prevDislikes => prevDislikes + 1);
-        setLikes(prevLikes => prevLikes - 1);
+        setDislikes((prevDislikes) => prevDislikes + 1);
+        setLikes((prevLikes) => prevLikes - 1);
         setDisliked(true);
         setLiked(false);
 
@@ -153,6 +155,13 @@ const VideoCard: React.FC<VideoCardProps> = ({
     } catch (error) {
       console.error('Error handling dislike:', error);
       // Handle error scenario
+    }
+  };
+
+  const handleVideoEnded = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      playVideo();
     }
   };
 
@@ -211,8 +220,9 @@ const VideoCard: React.FC<VideoCardProps> = ({
         className="w-full h-full object-cover"
         src={videoUrl}
         controls={false}
-        loop
+        loop={false}
         playsInline
+        onEnded={handleVideoEnded} // Handle video ended event
       />
 
       {isPaused && (
@@ -244,11 +254,11 @@ const VideoCard: React.FC<VideoCardProps> = ({
         <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{likes}</span>
         <button
           onClick={handleDislike}
-          className={`rounded-full p-2 ${disliked ? 'bg-red-500' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
+          className={`rounded-full p-2 ${disliked ? 'bg-[#dce775]' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
           style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
         >
           <FaThumbsDown
-            className={`text-2xl ${disliked ? 'text-black' : 'text-white'}`}
+            className={`text-2xl ${disliked ? 'text-black' : 'text-white'} `}
             style={{
               textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)',
             }}
@@ -257,23 +267,24 @@ const VideoCard: React.FC<VideoCardProps> = ({
         <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{dislikes}</span>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full  p-4 bg-[#dce7752a]">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <Image src={avatarUrl} width={40} height={40} alt="Avatar" className="rounded-full mr-2 border-2 border-[#dce775]" />
-            <div>
-              <h3 className="text-lg text-[#dce775] font-bold drop-shadow-2xl ">{title}</h3>
-              <p className="text-sm text-[#25dac8] drop-shadow-2xl">@{username}</p>
-            </div>
+      <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-[#000000] to-transparent">
+        <div className="flex items-center space-x-2">
+          <Image
+            src={avatarUrl}
+            alt="User Avatar"
+            width={50}
+            height={50}
+            className="rounded-full"
+          />
+          <div>
+            <p className="text-white font-bold">{username}</p>
+            <p className="text-white text-sm">{title}</p>
           </div>
         </div>
-        <div className="h-2 mt-2 relative bg-gray-700 rounded-full overflow-hidden">
-          <motion.div
-            className="absolute top-0 left-0 h-full bg-[#dce775]"
+        <div className="h-1 bg-gray-800 mt-2 relative w-full">
+          <div
+            className="h-1 bg-[#dce775]"
             style={{ width: `${progress}%` }}
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.2, ease: 'linear' }}
           />
         </div>
       </div>
