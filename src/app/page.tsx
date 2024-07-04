@@ -36,7 +36,7 @@ const Reels: React.FC = () => {
             // Video started playing successfully
           })
           .catch((error) => {
-            console.error('Error playing video:', error);
+             
             // Handle error scenario
           });
       }
