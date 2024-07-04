@@ -53,3 +53,60 @@ p strong{
   height: 100vh; /* Adjust this as needed */
   overflow: hidden; /* Prevent overflow issues */
 }
+
+
+.loader-container {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: rotateLoader 1.5s linear infinite;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);   */
+}
+
+.animation {
+  height: 50px;
+  display: flex;
+  transform: rotate(180deg);
+}
+
+.animation span {
+  width: 8px;
+  margin: 0 2px;
+  border-radius: 4px;
+  animation: loader 1.5s ease-in-out infinite;
+  animation-delay: calc(0.1s * var(--delay));
+  /* opacity: 0.8;   */
+  /* box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);   */
+}
+
+@keyframes loader {
+  0%, 100% {
+    height: 5px; /* Adjusted height for smoother transition */
+    background: #73dccd;
+  }
+
+  25% {
+    height: 30px; /* Increased height for emphasis */
+    background: #e8efa7;
+  }
+
+  50% {
+    height: 15px; /* Reduced height for variation */
+    background: #f7fdfd;
+  }
+
+  75% {
+    height: 30px; /* Increased height for emphasis */
+    background: #ff8985;
+  }
+}
+
+ 

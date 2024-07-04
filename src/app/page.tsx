@@ -1,6 +1,6 @@
 // Reels.tsx
 
-'use client'
+'use client';
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import WelcomeMessage from '../components/WelcomeMessage';
@@ -13,11 +13,12 @@ const getRandomIndex = (max: number) => Math.floor(Math.random() * max);
 
 const Reels: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [videos, setVideos] = useState(initialVideos); 
+  const [videos, setVideos] = useState(initialVideos);
   const [activeIndex, setActiveIndex] = useState(getRandomIndex(initialVideos.length));
   const [activeVideo, setActiveVideo] = useState<HTMLVideoElement | null>(null);
   const [canScroll, setCanScroll] = useState(true);
-  const [showWelcomePage, setShowWelcomePage] = useState(true); 
+  const [showWelcomePage, setShowWelcomePage] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // State to manage loading visibility
   const router = useRouter();
 
   const handlePlay = useCallback((videoElement: HTMLVideoElement) => {
@@ -25,25 +26,22 @@ const Reels: React.FC = () => {
       activeVideo.pause(); // Pause the currently active video
     }
     setActiveVideo(videoElement);
-    
+
     // Check if videoElement is paused or not before attempting to play
     if (videoElement.paused) {
       const playPromise = videoElement.play();
-  
+
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
             // Video started playing successfully
           })
           .catch((error) => {
-             
             // Handle error scenario
           });
       }
     }
   }, [activeVideo]);
-  
-  
 
   const handleScroll = throttle(() => {
     const container = containerRef.current;
@@ -136,6 +134,13 @@ const Reels: React.FC = () => {
   }, [canScroll, showWelcomePage]);
 
   useEffect(() => {
+    // Simulate loading time
+    setTimeout(() => {
+      setIsLoading(false); // Set loading state to false after 4 seconds (adjust as needed)
+    }, 8000);
+  }, []);
+
+  useEffect(() => {
     if (containerRef.current && !showWelcomePage) {
       containerRef.current.scrollTo({ top: activeIndex * window.innerHeight, behavior: 'smooth' });
 
@@ -152,21 +157,33 @@ const Reels: React.FC = () => {
   };
 
   return (
-    <div ref={containerRef} className="snap-y snap-mandatory overflow-scroll h-screen">
-      {showWelcomePage && <WelcomeMessage onStart={handleWelcomeButtonClick} />}
-
-      {!showWelcomePage && videos.map((video, index) => (
-        <div key={index} className="snap-center h-screen flex justify-center items-center">
-          <div className="w-full h-full lg:w-2/3 lg:max-w-lg lg:max-h-lg relative overflow-hidden">
-            <VideoCard
-              {...video}
-              isActive={index === activeIndex}
-              onPlay={handlePlay}
-              videoId={video.id}
-            />
+    <div className="relative h-screen bg-[#233d40]">
+      {isLoading && (
+        <div className="loader-container absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center  z-50">
+          <div className="animation">
+            <span  ></span>
+            <span  ></span>
+            <span  ></span>
+            <span  ></span>
+            <span  ></span>
           </div>
         </div>
-      ))}
+      )}
+
+      {!isLoading && (
+        <div ref={containerRef} className="snap-y snap-mandatory overflow-scroll h-screen">
+          {showWelcomePage && <WelcomeMessage onStart={handleWelcomeButtonClick} />}
+
+          {!showWelcomePage &&
+            videos.map((video, index) => (
+              <div key={index} className="snap-center h-screen flex justify-center items-center">
+                <div className="w-full h-full lg:w-2/3 lg:max-w-lg lg:max-h-lg relative overflow-hidden">
+                  <VideoCard {...video} isActive={index === activeIndex} onPlay={handlePlay} videoId={video.id} />
+                </div>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 };
