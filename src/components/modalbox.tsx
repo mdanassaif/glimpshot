@@ -41,6 +41,8 @@ const Modal = ({ onClose }: { onClose: () => void }) => {
           {/* Glimpshot: Additional information */}
           <p className="mt-4">All videos are friendly; anyone can watch them. There are around <strong>52 short videos.</strong></p>
           <p className="mt-4">The name <strong>Glimpshot</strong> was chosen randomly; it sounded cool to me hehe. <br/><br/>If you enjoy it, <strong>share with your friends and show your support.</strong></p>
+          <p className="mt-4">Source code: <a href="https://github.com/Nextjswebdev/glimpshot" className="text-blue-500 hover:underline">Github link</a></p>
+
         </div>
       </div>
     </div>
