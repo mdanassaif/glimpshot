@@ -4,7 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -44,14 +45,14 @@ html, body {
 }
 
 
-p strong{
-  color:#838d2a;
+p strong {
+  color: #838d2a;
 }
 
 
 .video-card {
-  height: 100vh; /* Adjust this as needed */
-  overflow: hidden; /* Prevent overflow issues */
+  height: 100vh;
+  overflow: hidden;
 }
 
 
@@ -88,26 +89,25 @@ p strong{
 }
 
 @keyframes loader {
-  0%, 100% {
-    height: 5px; /* Adjusted height for smoother transition */
+
+  0%,
+  100% {
+    height: 5px;
     background: #73dccd;
   }
 
   25% {
-    height: 30px; /* Increased height for emphasis */
+    height: 30px;
     background: #e8efa7;
   }
 
   50% {
-    height: 15px; /* Reduced height for variation */
+    height: 15px;
     background: #f7fdfd;
   }
 
   75% {
-    height: 30px; /* Increased height for emphasis */
+    height: 30px;
     background: #ff8985;
   }
 }
-
- 
- 

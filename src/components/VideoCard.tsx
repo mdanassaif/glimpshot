@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 
+// Glimpshot: Define props for the VideoCard component
 interface VideoCardProps {
   videoUrl: string;
   title: string;
@@ -16,6 +17,7 @@ interface VideoCardProps {
   videoId: string;
 }
 
+// Glimpshot: Main VideoCard component
 const VideoCard: React.FC<VideoCardProps> = ({
   videoUrl,
   title,
@@ -25,6 +27,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
   onPlay,
   videoId,
 }) => {
+  // Glimpshot: Refs and state management
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPaused, setIsPaused] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -34,6 +37,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
   const [disliked, setDisliked] = useState(false);
   const router = useRouter();
 
+  // Glimpshot: Function to play the video
   const playVideo = useCallback(() => {
     if (videoRef.current) {
       const playPromise = videoRef.current.play();
@@ -53,6 +57,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     }
   }, [onPlay]);
 
+  // Glimpshot: Handle play/pause functionality
   const handlePlayPause = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
@@ -64,6 +69,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     }
   };
 
+  // Glimpshot: Handle like functionality
   const handleLike = async (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent the click event from bubbling up to the parent div
     try {
@@ -71,13 +77,13 @@ const VideoCard: React.FC<VideoCardProps> = ({
         setLikes((prevLikes) => prevLikes + 1);
         setLiked(true);
 
-        // Example: Store like in MongoDB
+        // Glimpshot: Store like in MongoDB
         const response = await fetch('/api/likes', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ videoId, action: 'like' }), // Use videoId prop
+          body: JSON.stringify({ videoId, action: 'like' }),
         });
 
         if (!response.ok) {
@@ -92,13 +98,13 @@ const VideoCard: React.FC<VideoCardProps> = ({
         setLiked(true);
         setDisliked(false);
 
-        // Example: Update like in MongoDB
+        // Glimpshot: Update like in MongoDB
         const response = await fetch('/api/likes', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ videoId, action: 'like' }), // Use videoId prop
+          body: JSON.stringify({ videoId, action: 'like' }),
         });
 
         if (!response.ok) {
@@ -111,6 +117,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     }
   };
 
+  // Glimpshot: Handle dislike functionality
   const handleDislike = async (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent the click event from bubbling up to the parent div
     try {
@@ -118,13 +125,13 @@ const VideoCard: React.FC<VideoCardProps> = ({
         setDislikes((prevDislikes) => prevDislikes + 1);
         setDisliked(true);
 
-        // Example: Store dislike in MongoDB
+        // Glimpshot: Store dislike in MongoDB
         const response = await fetch('/api/likes', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ videoId, action: 'dislike' }), // Use videoId prop
+          body: JSON.stringify({ videoId, action: 'dislike' }),
         });
 
         if (!response.ok) {
@@ -139,13 +146,13 @@ const VideoCard: React.FC<VideoCardProps> = ({
         setDisliked(true);
         setLiked(false);
 
-        // Example: Update dislike in MongoDB
+        // Glimpshot: Update dislike in MongoDB
         const response = await fetch('/api/likes', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ videoId, action: 'dislike' }), // Use videoId prop
+          body: JSON.stringify({ videoId, action: 'dislike' }),
         });
 
         if (!response.ok) {
@@ -158,6 +165,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     }
   };
 
+  // Glimpshot: Handle video end
   const handleVideoEnded = () => {
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
@@ -165,8 +173,8 @@ const VideoCard: React.FC<VideoCardProps> = ({
     }
   };
 
+  // Glimpshot: Fetch initial likes and dislikes
   useEffect(() => {
-    // Fetch initial likes and dislikes from MongoDB or API
     const fetchLikesAndDislikes = async () => {
       try {
         const response = await fetch(`/api/likes?videoId=${videoId}`);
@@ -186,6 +194,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     fetchLikesAndDislikes();
   }, [videoId]);
 
+  // Glimpshot: Handle video playback when active
   useEffect(() => {
     if (isActive && videoRef.current) {
       videoRef.current.currentTime = 0;
@@ -195,6 +204,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     }
   }, [isActive, playVideo]);
 
+  // Glimpshot: Update video progress
   useEffect(() => {
     const updateProgress = () => {
       if (videoRef.current && videoRef.current.duration) {
@@ -213,8 +223,10 @@ const VideoCard: React.FC<VideoCardProps> = ({
     return () => clearInterval(interval);
   }, [videoRef.current?.currentTime, videoRef.current?.duration]);
 
+  // Glimpshot: Render the VideoCard component
   return (
     <div className="relative w-full h-full flex justify-center items-center bg-black cursor-pointer" onClick={handlePlayPause}>
+      {/* Glimpshot: Video element */}
       <video
         ref={videoRef}
         className="w-full h-full object-cover"
@@ -222,9 +234,10 @@ const VideoCard: React.FC<VideoCardProps> = ({
         controls={false}
         loop={false}
         playsInline
-        onEnded={handleVideoEnded} // Handle video ended event
+        onEnded={handleVideoEnded}
       />
 
+      {/* Glimpshot: Play button overlay */}
       {isPaused && (
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
@@ -238,6 +251,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
         </motion.div>
       )}
 
+      {/* Glimpshot: Like/Dislike buttons */}
       <div className="absolute top-1/2 right-0 mr-3 transform -translate-y-1/2 flex flex-col items-center space-y-2">
         <button
           onClick={handleLike}
@@ -267,6 +281,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
         <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{dislikes}</span>
       </div>
 
+      {/* Glimpshot: Video info and progress bar */}
       <div className="absolute bottom-0 left-0 w-full p-10 bg-gradient-to-t from-[#000000] to-transparent">
         <div className="flex items-center space-x-2">
           <Image
@@ -282,16 +297,12 @@ const VideoCard: React.FC<VideoCardProps> = ({
           </div>
         </div>
         <div className="h-1 bg-gray-800 mt-2 relative w-full">
-   
-        <div className="h-1 bg-gray-800 mt-2 relative w-full">
-  <motion.div
-    className="h-1 bg-[#dce775]"
-    initial={{ width: 0 }}
-    animate={{ width: `${progress}%` }}
-    transition={{ duration: 0.5, ease: "linear" }}
-  />
-</div>
-
+          <motion.div
+            className="h-1 bg-[#dce775]"
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5, ease: "linear" }}
+          />
         </div>
       </div>
     </div>

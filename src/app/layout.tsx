@@ -19,7 +19,6 @@ export default function RootLayout({
   return (
     <html lang="en">
        <Head>
-        {/* Include meta tags, title, and font styles */}
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>

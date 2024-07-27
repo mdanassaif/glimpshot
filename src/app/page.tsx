@@ -18,26 +18,24 @@ const Reels: React.FC = () => {
   const [activeVideo, setActiveVideo] = useState<HTMLVideoElement | null>(null);
   const [canScroll, setCanScroll] = useState(true);
   const [showWelcomePage, setShowWelcomePage] = useState(true);
-  const [isLoading, setIsLoading] = useState(true); // State to manage loading visibility
+  const [isLoading, setIsLoading] = useState(true);  
   const router = useRouter();
 
   const handlePlay = useCallback((videoElement: HTMLVideoElement) => {
     if (activeVideo && activeVideo !== videoElement) {
-      activeVideo.pause(); // Pause the currently active video
+      activeVideo.pause();  
     }
     setActiveVideo(videoElement);
 
-    // Check if videoElement is paused or not before attempting to play
+   
     if (videoElement.paused) {
       const playPromise = videoElement.play();
 
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
-            // Video started playing successfully
           })
           .catch((error) => {
-            // Handle error scenario
           });
       }
     }
@@ -134,9 +132,8 @@ const Reels: React.FC = () => {
   }, [canScroll, showWelcomePage]);
 
   useEffect(() => {
-    // Simulate loading time
     setTimeout(() => {
-      setIsLoading(false); // Set loading state to false after 4 seconds (adjust as needed)
+      setIsLoading(false); 
     }, 3500);
   }, []);
 
