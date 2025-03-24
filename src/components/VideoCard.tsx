@@ -36,6 +36,8 @@ const VideoCard: React.FC<VideoCardProps> = ({
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   // Glimpshot: Function to play the video
   const playVideo = useCallback(() => {
@@ -223,88 +225,117 @@ const VideoCard: React.FC<VideoCardProps> = ({
     return () => clearInterval(interval);
   }, [videoRef.current?.currentTime, videoRef.current?.duration]);
 
+  // Add error handling for video loading
+  const handleVideoError = () => {
+    setError(true);
+    setIsLoading(false);
+  };
+
+  // Add video loading handler
+  const handleVideoLoad = () => {
+    setIsLoading(false);
+    setError(false);
+  };
+
   // Glimpshot: Render the VideoCard component
   return (
     <div className="relative w-full h-full flex justify-center items-center bg-black cursor-pointer" onClick={handlePlayPause}>
-      {/* Glimpshot: Video element */}
-      <video
-        ref={videoRef}
-        className="w-full h-full object-cover"
-        src={videoUrl}
-        controls={false}
-        loop={false}
-        playsInline
-        onEnded={handleVideoEnded}
-      />
-
-      {/* Glimpshot: Play button overlay */}
-      {isPaused && (
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
-          <button onClick={handlePlayPause} className="rounded-full shadow-xl">
-            <FaPlayCircle className="text-5xl text-[#dce775]" />
-          </button>
-        </motion.div>
-      )}
-
-      {/* Glimpshot: Like/Dislike buttons */}
-      <div className="absolute top-1/2 right-0 mr-3 transform -translate-y-1/2 flex flex-col items-center space-y-2">
-        <button
-          onClick={handleLike}
-          className={`rounded-full p-2 ${liked ? 'bg-[#dce775]' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
-          style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
-        >
-          <FaThumbsUp
-            className={`text-2xl ${liked ? 'text-black' : 'text-white'} `}
-            style={{
-              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)',
-            }}
+      {error ? (
+        <div className="flex flex-col items-center justify-center text-white">
+          <p className="text-xl mb-2">Video not available</p>
+          <p className="text-sm text-gray-400">This video has been removed or is unavailable</p>
+        </div>
+      ) : (
+        <>
+          {/* Glimpshot: Video element */}
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            src={videoUrl}
+            controls={false}
+            loop={false}
+            playsInline
+            onEnded={handleVideoEnded}
+            onError={handleVideoError}
+            onLoadedData={handleVideoLoad}
           />
-        </button>
-        <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{likes}</span>
-        <button
-          onClick={handleDislike}
-          className={`rounded-full p-2 ${disliked ? 'bg-[#dce775]' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
-          style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
-        >
-          <FaThumbsDown
-            className={`text-2xl ${disliked ? 'text-black' : 'text-white'} `}
-            style={{
-              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)',
-            }}
-          />
-        </button>
-        <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{dislikes}</span>
-      </div>
 
-      {/* Glimpshot: Video info and progress bar */}
-      <div className="absolute bottom-0 left-0 w-full p-10 bg-gradient-to-t from-[#000000] to-transparent">
-        <div className="flex items-center space-x-2">
-          <Image
-            src={avatarUrl}
-            alt="User Avatar"
-            width={50}
-            height={50}
-            className="rounded-full"
-          />
-          <div>
-            <p className="text-white font-bold">{username}</p>
-            <p className="text-white text-sm">{title}</p>
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-12 h-12 border-4 border-[#dce775] border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          )}
+
+          {/* Glimpshot: Play button overlay */}
+          {isPaused && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <button onClick={handlePlayPause} className="rounded-full shadow-xl">
+                <FaPlayCircle className="text-5xl text-[#dce775]" />
+              </button>
+            </motion.div>
+          )}
+
+          {/* Glimpshot: Like/Dislike buttons */}
+          <div className="absolute top-1/2 right-0 mr-3 transform -translate-y-1/2 flex flex-col items-center space-y-2">
+            <button
+              onClick={handleLike}
+              className={`rounded-full p-2 ${liked ? 'bg-[#dce775]' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
+              style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
+            >
+              <FaThumbsUp
+                className={`text-2xl ${liked ? 'text-black' : 'text-white'} `}
+                style={{
+                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)',
+                }}
+              />
+            </button>
+            <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{likes}</span>
+            <button
+              onClick={handleDislike}
+              className={`rounded-full p-2 ${disliked ? 'bg-[#dce775]' : 'bg-gray-800 bg-opacity-70'} hover:bg-gray-200 transition duration-300 ease-in-out`}
+              style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
+            >
+              <FaThumbsDown
+                className={`text-2xl ${disliked ? 'text-black' : 'text-white'} `}
+                style={{
+                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.7)',
+                }}
+              />
+            </button>
+            <span className="text-[#d2d2d2] w-6 h-6 text-center rounded-xl" style={{ boxShadow: '0 4px 6px rgba(255, 255, 255, 0.497)' }}>{dislikes}</span>
           </div>
-        </div>
-        <div className="h-1 bg-gray-800 mt-2 relative w-full">
-          <motion.div
-            className="h-1 bg-[#dce775]"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5, ease: "linear" }}
-          />
-        </div>
-      </div>
+
+          {/* Glimpshot: Video info and progress bar */}
+          <div className="absolute bottom-0 left-0 w-full p-10 bg-gradient-to-t from-[#000000] to-transparent">
+            <div className="flex items-center space-x-2">
+              <Image
+                src={avatarUrl}
+                alt="User Avatar"
+                width={50}
+                height={50}
+                className="rounded-full"
+              />
+              <div>
+                <p className="text-white font-bold">{username}</p>
+                <p className="text-white text-sm">{title}</p>
+              </div>
+            </div>
+            <div className="h-1 bg-gray-800 mt-2 relative w-full">
+              <motion.div
+                className="h-1 bg-[#dce775]"
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.5, ease: "linear" }}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

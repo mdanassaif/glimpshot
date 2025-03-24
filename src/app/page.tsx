@@ -14,12 +14,45 @@ const getRandomIndex = (max: number) => Math.floor(Math.random() * max);
 const Reels: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [videos, setVideos] = useState(initialVideos);
-  const [activeIndex, setActiveIndex] = useState(getRandomIndex(initialVideos.length));
+  const [activeIndex, setActiveIndex] = useState(0);
   const [activeVideo, setActiveVideo] = useState<HTMLVideoElement | null>(null);
   const [canScroll, setCanScroll] = useState(true);
   const [showWelcomePage, setShowWelcomePage] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);  
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorVideos, setErrorVideos] = useState<Set<string>>(new Set());
+  const [preloadedVideos, setPreloadedVideos] = useState<Set<string>>(new Set());
   const router = useRouter();
+
+  // Function to check if a video exists
+  const checkVideoExists = async (videoUrl: string): Promise<boolean> => {
+    try {
+      const response = await fetch(videoUrl, { method: 'HEAD' });
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  // Filter out videos that don't exist
+  useEffect(() => {
+    const filterVideos = async () => {
+      const validVideos = [];
+      for (const video of initialVideos) {
+        if (!Array.from(errorVideos).includes(video.id)) {
+          const exists = await checkVideoExists(video.videoUrl);
+          if (!exists) {
+            setErrorVideos(prev => new Set([...Array.from(prev), video.id]));
+          } else {
+            validVideos.push(video);
+          }
+        }
+      }
+      setVideos(validVideos);
+      setIsLoading(false);
+    };
+
+    filterVideos();
+  }, [errorVideos]);
 
   const handlePlay = useCallback((videoElement: HTMLVideoElement) => {
     if (activeVideo && activeVideo !== videoElement) {
@@ -41,6 +74,42 @@ const Reels: React.FC = () => {
     }
   }, [activeVideo]);
 
+  // Preload next video
+  const preloadNextVideo = useCallback((currentIndex: number) => {
+    const nextIndex = (currentIndex + 1) % videos.length;
+    const nextVideo = videos[nextIndex];
+    
+    if (nextVideo && !preloadedVideos.has(nextVideo.id)) {
+      const video = new Audio(nextVideo.videoUrl);
+      video.preload = 'auto';
+      video.load();
+      setPreloadedVideos(prev => new Set([...Array.from(prev), nextVideo.id]));
+    }
+  }, [videos, preloadedVideos]);
+
+  // Update active index with smooth transition
+  const updateActiveIndex = useCallback((newIndex: number) => {
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
+      setCanScroll(false);
+      
+      // Preload next video
+      preloadNextVideo(newIndex);
+      
+      // Smooth scroll to the new video
+      if (containerRef.current) {
+        containerRef.current.scrollTo({
+          top: newIndex * window.innerHeight,
+          behavior: 'smooth'
+        });
+      }
+      
+      // Re-enable scrolling after animation
+      setTimeout(() => setCanScroll(true), 1000);
+    }
+  }, [activeIndex, preloadNextVideo]);
+
+  // Handle scroll with improved smoothness
   const handleScroll = throttle(() => {
     const container = containerRef.current;
     if (container && canScroll) {
@@ -49,9 +118,7 @@ const Reels: React.FC = () => {
       const newActiveIndex = Math.round(scrollPosition / screenHeight);
 
       if (newActiveIndex !== activeIndex) {
-        setActiveIndex(newActiveIndex);
-        setCanScroll(false);
-        setTimeout(() => setCanScroll(true), 1000);
+        updateActiveIndex(newActiveIndex);
       }
 
       if (scrollPosition > 0 && showWelcomePage) {
@@ -156,13 +223,13 @@ const Reels: React.FC = () => {
   return (
     <div className="relative h-screen bg-[#233d40]">
       {isLoading && (
-        <div className="loader-container absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center  z-50">
+        <div className="loader-container absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50">
           <div className="animation">
-            <span  ></span>
-            <span  ></span>
-            <span  ></span>
-            <span  ></span>
-            <span  ></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
           </div>
         </div>
       )}
@@ -171,14 +238,22 @@ const Reels: React.FC = () => {
         <div ref={containerRef} className="snap-y snap-mandatory overflow-scroll h-screen">
           {showWelcomePage && <WelcomeMessage onStart={handleWelcomeButtonClick} />}
 
-          {!showWelcomePage &&
+          {!showWelcomePage && videos.length > 0 ? (
             videos.map((video, index) => (
-              <div key={index} className="snap-center h-screen flex justify-center items-center">
+              <div key={video.id} className="snap-center h-screen flex justify-center items-center">
                 <div className="w-full h-full lg:w-2/3 lg:max-w-lg lg:max-h-lg relative overflow-hidden">
                   <VideoCard {...video} isActive={index === activeIndex} onPlay={handlePlay} videoId={video.id} />
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <div className="flex items-center justify-center h-screen text-white">
+              <div className="text-center">
+                <h2 className="text-2xl mb-4">No videos available</h2>
+                <p className="text-gray-400">Please try again later</p>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
